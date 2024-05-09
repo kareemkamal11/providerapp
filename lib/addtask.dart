@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todo/provider/task_data_provider.dart';
 
 class AddTask extends StatelessWidget {
   const AddTask({
     super.key,
-    required this.addTaskCallback,
   });
-
-  final Function addTaskCallback;
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +54,10 @@ class AddTask extends StatelessWidget {
                               ),
                               onPressed: () {
                                 if (newTaskTitle != null) {
-                                  addTaskCallback(newTaskTitle);
+                                  Provider.of<TaskDataProvider>(context,
+                                          listen: false)
+                                      .addTask(newTaskTitle!);
+
                                   Navigator.pop(context);
                                 } else {
                                   // show error message
@@ -63,7 +65,8 @@ class AddTask extends StatelessWidget {
                                     context: context,
                                     builder: (context) => AlertDialog(
                                       title: const Text('Error'),
-                                      content: const Text('Please enter a task'),
+                                      content:
+                                          const Text('Please enter a task'),
                                       actions: [
                                         TextButton(
                                           onPressed: () {
@@ -74,8 +77,7 @@ class AddTask extends StatelessWidget {
                                       ],
                                     ),
                                   );
-                                } 
-                                
+                                }
                               },
                               child: const Text('Add'),
                             ),

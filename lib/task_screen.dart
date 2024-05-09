@@ -1,39 +1,23 @@
 // ignore_for_file: must_be_immutable
 
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo/addtask.dart';
+import 'package:todo/provider/task_data_provider.dart';
 import 'package:todo/tasks_list.dart';
 
-import 'main.dart';
-
-class TasksScreen extends StatefulWidget {
-  TasksScreen({super.key});
-
-  @override
-  State<TasksScreen> createState() => _TasksScreenState();
-}
-
-class _TasksScreenState extends State<TasksScreen> {
-  List<Task> tasks = [
-    Task(name: 'Buy milk'),
-    Task(name: 'Buy eggs'),
-    Task(name: 'Buy bread'),
-  ];
+class TasksScreen extends StatelessWidget {
+  const TasksScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final taskProvider = Provider.of<TaskDataProvider>(context);
     return Scaffold(
         backgroundColor: Colors.teal[400],
         floatingActionButton: Container(
           alignment: Alignment.bottomCenter,
           padding: const EdgeInsets.only(bottom: 20, left: 30),
-          child: AddTask(addTaskCallback: (newTaskName) {
-            setState(() {
-              tasks.add(Task(name: newTaskName));
-            });
-          }),
+          child: const AddTask(),
         ),
         body: Container(
           padding:
@@ -57,7 +41,7 @@ class _TasksScreenState extends State<TasksScreen> {
               ],
             ),
             Text(
-              '${tasks.length} Tasks',
+              '${taskProvider.tasks.length} Tasks',
               style: const TextStyle(
                 fontSize: 18,
                 color: Colors.white,
@@ -70,7 +54,7 @@ class _TasksScreenState extends State<TasksScreen> {
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: TaskList(tasks: tasks),
+                child: const TaskList(),
               ),
             )
           ]),
