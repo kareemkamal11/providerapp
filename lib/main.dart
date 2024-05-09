@@ -17,11 +17,19 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const TasksScreen(),
+      debugShowCheckedModeBanner: false,
+      home: TasksScreen(),
     );
   }
 }
 
+class Task {
+  final String name;
+  bool isDone;
 
+  Task({required this.name, this.isDone = false});
 
-
+  void toggleDone() {
+    isDone = !isDone;
+  }
+}

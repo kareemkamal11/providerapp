@@ -1,70 +1,39 @@
+// ignore_for_file: must_be_immutable
+
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:todo/addtask.dart';
 import 'package:todo/tasks_list.dart';
 
-class TasksScreen extends StatelessWidget {
-  const TasksScreen({super.key});
+import 'main.dart';
+
+class TasksScreen extends StatefulWidget {
+  TasksScreen({super.key});
+
+  @override
+  State<TasksScreen> createState() => _TasksScreenState();
+}
+
+class _TasksScreenState extends State<TasksScreen> {
+  List<Task> tasks = [
+    Task(name: 'Buy milk'),
+    Task(name: 'Buy eggs'),
+    Task(name: 'Buy bread'),
+  ];
+
   @override
   Widget build(BuildContext context) {
-    onPressed() {
-      showModalBottomSheet(
-          isScrollControlled: true,
-          context: context,
-          builder: (context) => SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).viewInsets.bottom,
-                  ),
-                  child: Container(
-                    padding: const EdgeInsets.all(30),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Text(
-                            'Add Task',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 30,
-                              color: Colors.indigo[400],
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const TextField(
-                            autofocus: true,
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(height: 30),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.teal[400],
-                              foregroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                            ),
-                            onPressed: () {},
-                            child: const Text('Add'),
-                          ),
-                        ]),
-                  ),
-                ),
-              ));
-    }
-
     return Scaffold(
         backgroundColor: Colors.teal[400],
         floatingActionButton: Container(
           alignment: Alignment.bottomCenter,
           padding: const EdgeInsets.only(bottom: 20, left: 30),
-          child: FloatingActionButton(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-            backgroundColor: Colors.indigo[400],
-            onPressed: onPressed,
-            child: const Icon(
-              Icons.add,
-              color: Colors.white,
-            ),
-          ),
+          child: AddTask(addTaskCallback: (newTaskName) {
+            setState(() {
+              tasks.add(Task(name: newTaskName));
+            });
+          }),
         ),
         body: Container(
           padding:
@@ -87,9 +56,9 @@ class TasksScreen extends StatelessWidget {
                     )),
               ],
             ),
-            const Text(
-              '4 Tasks',
-              style: TextStyle(
+            Text(
+              '${tasks.length} Tasks',
+              style: const TextStyle(
                 fontSize: 18,
                 color: Colors.white,
               ),
@@ -101,7 +70,7 @@ class TasksScreen extends StatelessWidget {
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: const TaskList(),
+                child: TaskList(tasks: tasks),
               ),
             )
           ]),
